@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Demo Web App test suite" parallel="methods" thread-count="3">
+  <test name="Test">
+    <classes>
+      <class name="org.sample.TutorialPoint.Parallel_Execuation"/>
+      <!--<class name="org.sample.TutorialPoint.testing"/>
+      <class name="org.sample.TutorialPoint.NewTest"/>
+      <class name="org.sample.TutorialPoint.Test1"/>
+      <class name="org.sample.TutorialPoint.DependsON"/>-->
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
