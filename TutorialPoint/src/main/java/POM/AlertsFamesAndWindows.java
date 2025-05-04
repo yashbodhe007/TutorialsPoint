@@ -1,25 +1,23 @@
 package POM;
 
-import java.time.Duration;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import ReuseableMethods.ClickElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import com.aventstack.extentreports.Status;
 
 import ReuseableMethods.AlertHandling;
+import ReuseableMethods.ClickElement;
+import TestBase.DriverFactory;
+import TestBase.testBase;
 
-public class AlertsFamesAndWindows {
+public class AlertsFamesAndWindows extends testBase {
 	
 	@FindBy(xpath = "//*[text()=' Alerts, Frames & Windows ']")
 	WebElement Alerts_Frames_And_Windows;
@@ -59,71 +57,100 @@ public class AlertsFamesAndWindows {
 	WebElement frames;
 	
 	
-	
-	WebDriver driver;
-	WebDriverWait wait ;
-	JavascriptExecutor jse ;
-	Actions actions;
-	Select select;
-	AlertHandling handlingAlert;
 	Set<String> allTabs;
 	List<String> allWindowsHandle;
-	ClickElement CE;
-
-	
-	public AlertsFamesAndWindows(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		jse = (JavascriptExecutor) driver;
-		this.actions =new Actions(driver);
-		handlingAlert = new AlertHandling(driver);
-		CE= new ClickElement(driver);
+	public AlertsFamesAndWindows() {
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+		CE= new ClickElement();	
+		handlingAlert = new AlertHandling();
 
 	}
 
 	public void alertsFramesAndWindows() {
-		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
-		Alerts_Frames_And_Windows.click();
+//		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
+		CE.clickElement(Alerts_Frames_And_Windows, 5, 2);
+//		test.log(Status.PASS, "clicked on Alerts_Frames_And_Windows ");
+		wait.until(ExpectedConditions.visibilityOf(Browser_Windows));
 		browserWindows();
 		alert();
-		Alerts_Frames_And_Windows.click();
-
+		CE.clickElement(Alerts_Frames_And_Windows, 5, 2);
 	}
 	
 	public void browserWindows() {
-		CE.clickElement(Browser_Windows, 10, 2);
-		CE.clickElement(New_Tab, 10, 2);
-	
+		CE.clickElement(Browser_Windows, 5, 2);
+		CE.clickElement(New_Tab, 5, 2);
 
-		allTabs = driver.getWindowHandles();
+		allTabs = DriverFactory.getInstance().getDriver().getWindowHandles();
 		allWindowsHandle = new ArrayList<>(allTabs);
-		driver.switchTo().window(allWindowsHandle.get(1));
-		System.out.println(new_tab_header.getText() + new_tab_header_message.getText());
-		driver.close();
-		driver.switchTo().window(allWindowsHandle.get(0));
+
+		System.out.println("Number of windows: " + allWindowsHandle.size());
 		
-		CE.clickElement(New_Window, 10, 2);
+		if (allWindowsHandle.size() > 1) {
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+			System.out.println(new_tab_header.getText() + new_tab_header_message.getText());
+			DriverFactory.getInstance().getDriver().close();
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
+		}
+		else {
+			System.out.println("Not enough windows open.");
+		}
 
-		allTabs = driver.getWindowHandles();
-		allWindowsHandle = new ArrayList<>(allTabs);
-		driver.switchTo().window(allWindowsHandle.get(1));
-		System.out.println(new_window_header.getText() + new_window_header_message.getText());
-		driver.close();
-		driver.switchTo().window(allWindowsHandle.get(0));
-		CE.clickElement(New_Window_Message, 10, 2);
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+//		System.out.println(new_tab_header.getText() + new_tab_header_message.getText());
+//		DriverFactory.getInstance().getDriver().close();
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
+		
+			
+		
+		CE.clickElement(New_Window, 5, 2);
 
-		allTabs = driver.getWindowHandles();
+		allTabs = DriverFactory.getInstance().getDriver().getWindowHandles();
 		allWindowsHandle = new ArrayList<>(allTabs);
-		driver.switchTo().window(allWindowsHandle.get(1));
-		System.out.println(new_window_message_header.getText() + new_window_message_message.getText());
-		driver.close();
-		driver.switchTo().window(allWindowsHandle.get(0));
+		
+		if (allWindowsHandle.size() > 1) {
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+			System.out.println(new_window_header.getText() + new_window_header_message.getText());
+			DriverFactory.getInstance().getDriver().close();
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
+		}
+		else {
+			System.out.println("Not enough windows open.");
+		}
+		
+		
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+//		System.out.println(new_window_header.getText() + new_window_header_message.getText());
+//		DriverFactory.getInstance().getDriver().close();
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
+		CE.clickElement(New_Window_Message, 5, 2);
+
+		allTabs = DriverFactory.getInstance().getDriver().getWindowHandles();
+		allWindowsHandle = new ArrayList<>(allTabs);
+
+		if (allWindowsHandle.size() > 1) {
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+			System.out.println(new_window_message_header.getText() + new_window_message_message.getText());
+			DriverFactory.getInstance().getDriver().close();
+			DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
+		}
+
+		else {
+			System.out.println("Not enough windows open.");
+		}
+
+
+		
+		
+		
+		
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(1));
+//		System.out.println(new_window_message_header.getText() + new_window_message_message.getText());
+//		DriverFactory.getInstance().getDriver().close();
+//		DriverFactory.getInstance().getDriver().switchTo().window(allWindowsHandle.get(0));
 	}
 	
 	public void alert() {
-		CE.clickElement(alerts, 10, 2);	
+		CE.clickElement(alerts, 5, 2);	
 		handlingAlert.handleSimpleAlerts(to_see_alert_button);
 		handlingAlert.handleSimpleAlerts(alert_will_appear_after_5_seconds_button);
 		handlingAlert.handleConfimationAlerts(confirm_box_will_appear_button);
@@ -131,7 +158,7 @@ public class AlertsFamesAndWindows {
 	}
 	
 	public void frames() {
-		CE.clickElement(frames, 10, 2);	
+		CE.clickElement(frames, 5, 2);	
 	}
 	
 	public void nestedFrames() {

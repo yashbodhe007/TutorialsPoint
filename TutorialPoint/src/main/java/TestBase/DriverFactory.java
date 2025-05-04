@@ -1,5 +1,6 @@
 package TestBase;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ThreadGuard;
 
 public class DriverFactory {
 	
@@ -17,20 +18,20 @@ public class DriverFactory {
 		
 		
 		//factory design pattern --> define separate factory methods for creating objects and create objects by calling that methods
-		ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
+		private static  ThreadLocal<WebDriver> Driver = new ThreadLocal<WebDriver>();
 		
-		public synchronized WebDriver getDriver() {
-			return driver.get();
+		public  WebDriver getDriver() {
+			return Driver.get();
 		}
 		
-		public synchronized void setDriver(WebDriver driverParm) {
-			driver.set(driverParm);
+		public  void setDriver(WebDriver driverParm) {
+			Driver.set(ThreadGuard.protect(driverParm));
 		}
 		
 		
-		public synchronized void closeBrowser() {
-			driver.get().quit();
-			driver.remove();
+		public  void closeBrowser() {
+			Driver.get().quit();
+			Driver.remove();
 		}
 
 }

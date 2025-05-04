@@ -5,12 +5,9 @@
     <classes>
       <class name="org.sample.TutorialPoint.Parallel_Execuation">
         <methods>
+          <include name="closeBrowser"/>
           <include name="openBrowser"/>
-          <include name="Verify_AlertsFamesAndWindows"/>
-          <include name="Verify_Elements"/>
-          <include name="Verify_Forms"/>
           <include name="Verify_Widgets"/>
-          <include name="afterMethod"/>
         </methods>
       </class> <!-- org.sample.TutorialPoint.Parallel_Execuation -->
     </classes>

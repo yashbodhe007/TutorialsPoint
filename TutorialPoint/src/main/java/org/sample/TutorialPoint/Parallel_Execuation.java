@@ -1,70 +1,71 @@
 package org.sample.TutorialPoint;
 
+import java.util.HashMap;
+
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import POM.AlertsFamesAndWindows;
-import POM.Driversetup;
 import POM.Elements;
 import POM.Forms;
-import POM.Homepage;
 import POM.Widgets;
 import ReuseableMethods.ClickElement;
-import TestBase.BrowserFactory;
-import TestBase.DriverFactory;
+import ReuseableMethods.ExcelOperations;
+import ReuseableMethods.ListenersImplementation;
 import TestBase.testBase;
 
-import org.testng.annotations.BeforeMethod;
 
-import java.net.MalformedURLException;
-import java.time.Duration;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-
+@Listeners(ListenersImplementation.class)
 public class Parallel_Execuation extends testBase{
-//	WebDriver driver;
-	ClickElement CE;
-
+	
+//	  Elements ELE = new Elements();
+//	  AlertsFamesAndWindows AFW = new AlertsFamesAndWindows();
+//	  Forms frm = new Forms();
+//	  Widgets wid= new Widgets();
+	  
+	  
   
   @Test
-  public void Verify_Elements() {
-	  System.out.println("1st Verify_Elements " + Thread.currentThread().getId());
-	  Elements ELE = new Elements(driver);
-	  ELE.elements();
+  public void Verify_Elements() throws Exception {
+	  ExcelOperations excel = new ExcelOperations("Selenium - Automation Practice");
+	  HashMap<String, String> testData = excel.getTestDataInMap(1);
+	  System.out.println("Verify_Elements " + Thread.currentThread().getId());
+	  Elements ELE = new Elements();
+	  ELE.elements(testData);
 	  System.out.println("Verify_Elements done");
+	  System.out.println("Verify_Elements close " + Thread.currentThread().getId());
   }
   
-  @Test
-  public void Verify_Forms() {
-	  System.out.println("2nd Verify_Forms " + Thread.currentThread().getId());
-	  Forms frm = new Forms(driver);
-	  frm.Practise_Form();
-	  System.out.println("Verify_Forms done");
-
-  }
   
   @Test
-  public void Verify_AlertsFamesAndWindows() {
-	  System.out.println("3rd Verify_AlertsFamesAndWindows " + Thread.currentThread().getId());
-	  AlertsFamesAndWindows AFW = new AlertsFamesAndWindows(driver);
+  public void Verify_AlertsFamesAndWindows()  {
+	  System.out.println("Verify_AlertsFamesAndWindows " + Thread.currentThread().getId());
+	  AlertsFamesAndWindows AFW = new AlertsFamesAndWindows();
 	  AFW.alertsFramesAndWindows();	 
 	  System.out.println("Verify_AlertsFamesAndWindows done");
+	  System.out.println("Verify_AlertsFamesAndWindows close " + Thread.currentThread().getId());
+  }
+  
+  @Test
+  public void Verify_Forms() throws Exception {
+	  ExcelOperations excel = new ExcelOperations("Selenium - Automation Practice");
+	  HashMap<String, String> testData = excel.getTestDataInMap(2);
+	  System.out.println("Verify_Forms " + Thread.currentThread().getId());
+	  Forms frm = new Forms();
+	  frm.Practise_Form(testData);
+	  System.out.println("Verify_Forms done");
+	  System.out.println("Verify_Forms close " + Thread.currentThread().getId());
   }
   
   @Test
   public void Verify_Widgets() {
-	  System.out.println("4th Verify_Widgets " + Thread.currentThread().getId());
-	  Widgets wid= new Widgets(driver);
+	  System.out.println("Verify_Widgets " + Thread.currentThread().getId());
+	  Widgets wid= new Widgets();
 	  wid.widgets();
 	  System.out.println("Verify_Widgets done");
-
+	  System.out.println("Verify_Widgets close " + Thread.currentThread().getId());
   }
-  
-  
-
-  
-
+	 
 }

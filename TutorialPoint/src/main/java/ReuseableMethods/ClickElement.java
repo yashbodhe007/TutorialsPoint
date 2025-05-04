@@ -13,22 +13,25 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import TestBase.DriverFactory;
+import TestBase.testBase;
 
-public class ClickElement {
+
+public class ClickElement extends testBase {
 	
 	
 	
-	WebDriver driver;
-	WebDriverWait wait ;
-	JavascriptExecutor jse ;
-	Actions actions;
-	public ClickElement(WebDriver driver) {
-		this.driver= driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, Duration.ofMinutes(1));
-		driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
-		jse = (JavascriptExecutor) driver;
-		this.actions =new Actions(driver);
+//	WebDriver driver;
+//	WebDriverWait wait ;
+//	JavascriptExecutor jse ;
+//	Actions actions;
+	public ClickElement() {
+//		testBase.driver= driver;
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+//		this.wait = new WebDriverWait(driver, Duration.ofMinutes(1));
+//		driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
+//		jse = (JavascriptExecutor) driver;
+//		this.actions =new Actions(driver);
 	}
 	
 	
@@ -37,10 +40,6 @@ public class ClickElement {
 		
 		while (attempt<maxRetries) {
 			try {
-				
-				
-				
-				
 				// 1.wait until element is visibile and clickable 
 				wait.until(ExpectedConditions.visibilityOf(element));
 				wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -77,7 +76,7 @@ public class ClickElement {
 			attempt++;
 				
 		}
-			System.err.println("Failed to click " + element + "after maxtries of " +maxRetries);
+//			System.err.println("Failed to click " + element + "after maxtries of " +maxRetries);
 				
 	}	
 	

@@ -29,13 +29,13 @@ public class DependsON {
 	}
 	@Test(dependsOnMethods = {"selectCategory"})
 	public void seleniumAutomationTesting() {
-		Elements ELE = new Elements(driver);
+		Elements ELE = new Elements();
 		ELE.elements();
-		Forms frm = new Forms(driver);
+		Forms frm = new Forms();
 		frm.Practise_Form();
-		AlertsFamesAndWindows AFW = new AlertsFamesAndWindows(driver);
+		AlertsFamesAndWindows AFW = new AlertsFamesAndWindows();
 		AFW.alertsFramesAndWindows();
-		Widgets wid= new Widgets(driver);
+		Widgets wid= new Widgets();
 		wid.widgets();
 		
 	}

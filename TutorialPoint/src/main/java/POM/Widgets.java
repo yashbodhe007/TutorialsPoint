@@ -1,33 +1,26 @@
 package POM;
 
-import static org.testng.Assert.assertEquals;
-
 import java.awt.AWTException;
-
 import java.awt.Robot;
-import java.awt.event.InputEvent;
-import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import com.aventstack.extentreports.App;
+import org.testng.Assert;
+
+import com.aventstack.extentreports.Status;
 
 import ReuseableMethods.AlertHandling;
 import ReuseableMethods.ClickElement;
 import ReuseableMethods.DropDownHandling;
-import dev.failsafe.internal.util.Assert;
-import org.testng.*;
+import TestBase.DriverFactory;
+import TestBase.testBase;
 
 
-public class Widgets {
+public class Widgets extends testBase {
 	
 	@FindBy(xpath = "//*[text()=' Widgets']")
 	WebElement widgets;
@@ -73,7 +66,8 @@ public class Widgets {
 
 	@FindBy(xpath = "//h2[@id='headingFour']/following-sibling::div/descendant::li/a[text()=' Select Menu']")
 	WebElement selectMenu_tab;
-	@FindBy(xpath = "//input[@id='demo-multiple-select-input']")
+//	@FindBy(xpath = "//input[@id='demo-multiple-select-input']")
+	@FindBy(xpath = "//input[@id='demo-multiple-select-input']/following-sibling::span/span")
 	WebElement multiSelectDropdown;
 	@FindBy(xpath = "//div[text()='Books']")
 	WebElement multiSelectDropdownValue_Books;
@@ -90,24 +84,13 @@ public class Widgets {
 	
 	
 	
-	WebDriver driver;
-	WebDriverWait wait ;
-	JavascriptExecutor jse ;
-	Actions actions;
-	Select select;
-	AlertHandling handlingAlert;
-	ClickElement CE ;
-	DropDownHandling dropdownhandling;
+
 	Robot robot;
-	public Widgets(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		jse = (JavascriptExecutor) driver;
-		this.actions =new Actions(driver);
-		handlingAlert = new AlertHandling(driver);
-		CE = new ClickElement(driver);
-		dropdownhandling = new DropDownHandling(driver);
+	public Widgets() {
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+		handlingAlert = new AlertHandling();
+		CE = new ClickElement();
+		ddh = new DropDownHandling();
 		try {
 			robot= new Robot();
 		} catch (AWTException e) {
@@ -117,13 +100,14 @@ public class Widgets {
 	}
 	
 	public void widgets() {
-		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
-//		jse.executeScript("arguments[0].scrollIntoView(true);", widgets);
+//		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
+		CE.clickElement(widgets, 10, 10);
+		
 //		widgets.click();
-		CE.clickElement(widgets, 2, 2);
+//		Assert.assertTrue(Accordion.isDisplayed());
+
 		accordion();
 		System.out.println("accordion done " );
-//		widgets.click();
 		CE.clickElement(widgets, 2, 2);
 		autoComplete();
 		System.out.println("autoComplete done " );
@@ -142,44 +126,35 @@ public class Widgets {
 	}
 	
 	public void accordion() {
-//		wait.until(ExpectedConditions.elementToBeClickable(Accordion));
-//		Accordion.click();
-		CE.clickElement(Accordion, 2, 2);
-
-//		What_is_Lorem_Ipsum.click();
-		CE.clickElement(What_is_Lorem_Ipsum, 2, 2);
+		CE.clickElement(Accordion, 10, 2);
+		CE.clickElement(What_is_Lorem_Ipsum, 10, 2);
 		System.out.println(What_is_Lorem_Ipsum_text.getText());
-		
 	}
 	
 	public void autoComplete() {
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		Auto_Complete.click();
-		CE.clickElement(Auto_Complete, 2, 2);
+		CE.clickElement(Auto_Complete, 10, 2);
 		Tags_input.sendKeys("a");
-//		AppleScript.click();
-		CE.clickElement(AppleScript, 2, 2);
+		CE.clickElement(AppleScript, 10, 2);
 	}
 	
 	public void datePicker() {
-		CE.clickElement(Date_Picker, 2, 2);
-		CE.clickElement(Select_date_and_Time, 2, 2);
-//		CE.clickElement(Select_month_from_dropdown, 2, 2);
-		dropdownhandling.dropDownByIndex(Select_month_from_dropdown, 1);
-		System.out.println(dropdownhandling.getDropDownValue(Select_month_from_dropdown));
+		CE.clickElement(Date_Picker, 10, 2);
+		CE.clickElement(Select_date_and_Time, 10, 2);
+		ddh.dropDownByIndex(Select_month_from_dropdown, 1);
+		System.out.println(ddh.getDropDownValue(Select_month_from_dropdown));
 		Enter_year.clear();
 		Enter_year.sendKeys("2025");
-		CE.clickElement(Enter_todays_date, 2, 2);	
+		CE.clickElement(Enter_todays_date, 10, 2);	
 	}
 	
 	
 	public void slider() {
-		CE.clickElement(Slider_tab, 2, 2);
+		CE.clickElement(Slider_tab, 10, 2);
 		int sliderWidth = Slider.getSize().getWidth();
 		System.out.println(sliderWidth);
 		
@@ -206,38 +181,27 @@ public class Widgets {
 		
 	}
 	public void progressBar() {
-		CE.clickElement(progressBar_tab, 2, 2);
-		CE.clickElement(start_button, 2, 2);
-//		wait.until(driver1 ->progress_bar.getAttribute("style").contains("width: 100.02%;"));
+		CE.clickElement(progressBar_tab, 10, 2);
+		CE.clickElement(start_button, 10, 2);
 		System.out.println(progress_bar.getAttribute("style"));
 		
 		
 		
 	}
 	public void selectMenu() {
-//		selectMenu_tab.click();
-//		multiSelectDropdown.click();
-//		multiSelectDropdownValue_Books.click();
-//		multiSelectDropdownValue_Movies_Music_and_Games.click();
-		CE.clickElement(selectMenu_tab, 2, 2);
-		CE.clickElement(multiSelectDropdown, 2, 2);
-		CE.clickElement(multiSelectDropdownValue_Books, 2, 2);
-		CE.clickElement(multiSelectDropdownValue_Movies_Music_and_Games, 2, 2);
-		CE.clickElement(singleSelectDropdown, 2, 2);
-		dropdownhandling.dropDownByVisibleText(singleSelectDropdown, "Mrs.");
-		
-
-		
+		CE.clickElement(selectMenu_tab, 10, 2);
+		CE.clickElement(multiSelectDropdown, 10, 2);
+		CE.clickElement(multiSelectDropdownValue_Books, 10, 2);
+		CE.clickElement(multiSelectDropdownValue_Movies_Music_and_Games, 10, 2);
+		CE.clickElement(singleSelectDropdown, 10, 2);
+		ddh.dropDownByVisibleText(singleSelectDropdown, "Mrs.");
 	}
+
 	public void horizontalScroll() {
 		CE.clickElement(horizontalScroll_tab, 2, 2);
-
 		jse.executeScript("arguments[0].scrollLeft +=500;", horizontal_Scroll);
 		jse.executeScript("arguments[0].scrollLeft -=200;", horizontal_Scroll);
 		jse.executeScript("arguments[0].scrollTop +=300;", horizontal_Scroll);
-		
-//		actions.moveToElement(horizontal_Scroll)
-//		.clickAndHold().moveByOffset(300, 0).release().perform();
 	}
 	
 	

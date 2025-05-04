@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -20,14 +21,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aventstack.extentreports.Status;
+
 import ReuseableMethods.ClickElement;
+import TestBase.DriverFactory;
 import TestBase.testBase;
 import io.reactivex.rxjava3.functions.Action;
 
 
 
 
-public class Elements { 
+public class Elements extends testBase { 
 	
 	
 	By Selenium_Automation_practise = By.xpath("//div[@class=\"toc-nav\"]/ul/li/a[contains(text(),'Selenium - Automation Practice')]");
@@ -111,58 +115,57 @@ public class Elements {
 	
 	
 	
-	WebDriver driver;
-	WebDriverWait wait ;
-	JavascriptExecutor jse ;
-	Actions actions;
-	ClickElement CE;
-	public Elements(WebDriver driver) {
-		this.driver= driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, Duration.ofMinutes(1));
-		driver.manage().timeouts().implicitlyWait(Duration.ofMinutes(1));
-		jse = (JavascriptExecutor) driver;
-		this.actions =new Actions(driver);
-		CE= new ClickElement(driver);
 
-		
+	public Elements() {
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+		CE= new ClickElement();	
 	}
 	
-	public void elements() {
-		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
+	public void elements(HashMap<String, String> testData) {
+//		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
 //		WebElement SeleniumAutomationPractise = driver.findElement(Selenium_Automation_practise);
-		Actions actions = new Actions(driver);
+//		Actions actions = new Actions(driver);
 //        actions.moveToElement(SeleniumAutomationPractise).perform();
 		
 //		jse.executeScript("arguments[0].scrollIntoView(true);", SeleniumAutomationPractise);
 //		SeleniumAutomationPractise.click();
 		
 		
-		Text_box();
+		Text_box(testData);
 		System.out.println("Text_box");
-		Check_Box();
-		System.out.println("Check_Box");
-		Web_Tables();
-		System.out.println("Web_Tables");
-		Buttons();
-		System.out.println("Buttons");
-		Links();
-		System.out.println("Links");
-		Upload_and_Download();
-		System.out.println("Upload_and_Download");
-		Dynamic_Properties();
-		System.out.println("Dynamic_Properties");
+//		Check_Box();
+//		System.out.println("Check_Box");
+//		Web_Tables();
+//		System.out.println("Web_Tables");
+//		Buttons();
+//		System.out.println("Buttons");
+//		Links();
+//		System.out.println("Links");
+//		Upload_and_Download();
+//		System.out.println("Upload_and_Download");
+//		Dynamic_Properties();
+//		System.out.println("Dynamic_Properties");
 	}
 	
-	public void Text_box() {
+	public void Text_box(HashMap<String, String> testData) {
 		
 		CE.clickElement(Elements, 2, 2);
+		test.log(Status.INFO,"clicked on element ");
 		CE.clickElement(Text_Box, 2, 2);
-		Full_Name.sendKeys("yash bodhe");
-		Email.sendKeys("Yash@gmail.com");
-		Current_Address.sendKeys("pune          jwehbf           cihwekbfc              ");
-		Password.sendKeys("12345abced");
-		CE.clickElement(submit_button, 10, 2);
+		CE.clickElement(Full_Name, 2, 2);
+		
+//		Elements.click();
+//		Text_Box.click();
+//		Full_Name.click();
+		
+		
+//		Full_Name.sendKeys("yash bodhe");
+		Full_Name.sendKeys(testData.get("elements_textbox_Full Name"));
+		Email.sendKeys(testData.get("forms_practiseforms_Email"));
+		
+		Current_Address.sendKeys(testData.get("elements_textbox_CurrentAddress :"));
+		Password.sendKeys(testData.get("elements_textbox_Password :"));
+		CE.clickElement(submit_button, 2, 2);
 
 	}
 	
@@ -175,22 +178,12 @@ public class Elements {
 		CE.clickElement(checkbox_last_level_1, 2, 2);
 		CE.clickElement(checkbox_sub_level_2, 2, 2);
 		CE.clickElement(checkbox_main_level_2, 2, 2);
-		
-//		Elements.click();
-//		check_box.click();
-//		plus_main_level1.click();
-//		plus_sub_level1.click();
-//		checkbox_last_level_1.click();
-//		checkbox_sub_level_2.click();
-//		checkbox_main_level_2.click();
-		
 	}
 	
 	public void Radio_Button() {
 		CE.clickElement(radio_button, 2, 2);
 		CE.clickElement(radio_button_yes, 2, 2);
 		System.out.println(radio_button_yes_message.getText());
-	
 	}
 	
 	public void Web_Tables() {
@@ -216,11 +209,11 @@ public class Elements {
 	
 	public void Links() {
 		CE.clickElement(links, 2, 2);
-		String paranrWinID= driver.getWindowHandle();
-		System.out.println("current url: "  + driver.getCurrentUrl() + "current handel" + paranrWinID);
+		String paranrWinID= DriverFactory.getInstance().getDriver().getWindowHandle();
+		System.out.println("current url: "  + DriverFactory.getInstance().getDriver().getCurrentUrl() + "current handel" + paranrWinID);
 		CE.clickElement(home, 2, 2);
 
-		Set<String> allWinIDs = driver.getWindowHandles();
+		Set<String> allWinIDs = DriverFactory.getInstance().getDriver().getWindowHandles();
 		System.out.println("All ids are: ");
 		for(String allWinID: allWinIDs) {
 			System.out.println(allWinID);
@@ -229,12 +222,12 @@ public class Elements {
 		while (itr.hasNext()) {
 			String childWinID = itr.next();
 			if(!paranrWinID.equalsIgnoreCase(childWinID)) {
-				driver.switchTo().window(childWinID);
-				System.out.println("child url: "  + driver.getCurrentUrl() + "child handel" + childWinID + "child title" + driver.getTitle());
-				driver.close();
+				DriverFactory.getInstance().getDriver().switchTo().window(childWinID);
+				System.out.println("child url: "  + DriverFactory.getInstance().getDriver().getCurrentUrl() + "child handel" + childWinID + "child title" + DriverFactory.getInstance().getDriver().getTitle());
+				DriverFactory.getInstance().getDriver().close();
 			}
 		}
-		driver.switchTo().window(paranrWinID);
+		DriverFactory.getInstance().getDriver().switchTo().window(paranrWinID);
 	}
 
 	

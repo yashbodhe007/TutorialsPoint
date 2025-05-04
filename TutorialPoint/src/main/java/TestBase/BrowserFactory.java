@@ -2,10 +2,13 @@ package TestBase;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -24,26 +27,38 @@ public class BrowserFactory {
 
 			if(browser.equalsIgnoreCase("Chrome")) {
 
-				WebDriverManager.chromedriver().driverVersion("134.0.6998.36").setup();
-				System.setProperty("webdriver.chrome.silentOutput", "true");
+//				WebDriverManager.chromedriver().driverVersion("134.0.6998.36").setup();
+//				System.setProperty("webdriver.chrome.silentOutput", "true");
 				ChromeOptions options = new ChromeOptions();
+
 				options.addArguments("--incognito");
+		
+//				options.setCapability("acceptInsecureCerts", true);
+//				options.setCapability("browserVersion", "134.0.6998.36");
+
 				driver = new ChromeDriver(options);
 
 			}else if (browser.equalsIgnoreCase("firefox")) {
-
 				WebDriverManager.firefoxdriver().setup();
 				FirefoxOptions foptions = new FirefoxOptions();
 				foptions.addArguments("-private");						
 				driver = new FirefoxDriver(foptions);
 
-			} if (browser.equalsIgnoreCase("ie")) {
-
+			}else if (browser.equalsIgnoreCase("ie")) {
 				WebDriverManager.iedriver().setup();
 				InternetExplorerOptions iOptions = new InternetExplorerOptions();
 				iOptions.addCommandSwitches("-private");
 				driver = new InternetExplorerDriver(iOptions);
+			}else if (browser.equalsIgnoreCase("edge")) {
+				WebDriverManager.edgedriver().setup();
+				EdgeOptions eoptions = new EdgeOptions();
+				driver = new EdgeDriver(eoptions);
 			}
+			
+			
+			
+			
+			
 			return driver;
 		}
 

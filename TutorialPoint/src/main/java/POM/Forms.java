@@ -1,7 +1,7 @@
 package POM;
 
 import java.time.Duration;
-
+import java.util.HashMap;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -15,8 +15,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import POM.*;
 import ReuseableMethods.ClickElement;
 import ReuseableMethods.DropDownHandling;
+import TestBase.DriverFactory;
+import TestBase.testBase;
 
-public class Forms {
+public class Forms extends testBase  {
 	
 	@FindBy(xpath = "//*[text()=' Forms']")
 	WebElement forms;
@@ -46,61 +48,35 @@ public class Forms {
 	WebElement Choose_city_dropdown;
 	
 	
-	WebDriver driver;
-	WebDriverWait wait ;
-	JavascriptExecutor jse ;
-	Actions actions;
-	Select select;
-	DropDownHandling ddh;
-	ClickElement CE;
 
-
-	public Forms(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
-		this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		jse = (JavascriptExecutor) driver;
-		this.actions =new Actions(driver);
-		ddh = new DropDownHandling(driver);
-		CE= new ClickElement(driver);
-
-		
-	
+	public Forms() {
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+		ddh = new DropDownHandling();
+		CE= new ClickElement();
 	}
 	
-	public void Practise_Form(){
-		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
+	public void Practise_Form(HashMap<String, String> testData){
+//		driver.navigate().to("https://www.tutorialspoint.com/selenium/practice/selenium_automation_practice.php");
+		CE.clickElement(forms, 5, 2);	
+		CE.clickElement(Practice_Form, 5, 2);
 
-//		wait.until(ExpectedConditions.visibilityOf(forms));
-//		actions.moveToElement(forms).click().perform();
-		CE.clickElement(forms, 10, 2);	
-		CE.clickElement(Practice_Form, 10, 2);
-
-		Frist_Name.sendKeys("yash");
-		Email.sendKeys("yash@cogni.com");
-		CE.clickElement(Gender_male, 10, 2);
-		Mobile_No.sendKeys("1234567890");
-		Date_Of_Birth.sendKeys("12/12/2012");
-		Subject.sendKeys("maths");
-		CE.clickElement(Hobbies_Sports, 10, 2);
+		Frist_Name.sendKeys(testData.get("forms_practiseforms_Name"));
+		Email.sendKeys(testData.get("forms_practiseforms_Email"));
+		CE.clickElement(Gender_male, 2, 2);
+		Mobile_No.sendKeys(testData.get("forms_practiseforms_Mobile"));
+		Date_Of_Birth.sendKeys(testData.get("forms_practiseforms_Date of Birth"));
+		Subject.sendKeys(testData.get("forms_practiseforms_Subjects"));
+		CE.clickElement(Hobbies_Sports, 2, 2);
 		choose_file.sendKeys("C:\\Users\\2282081\\OneDrive - Cognizant\\Desktop\\pom.xml");
-		Current_address.sendKeys("pune");
-		
-		
-//		select = new Select(Choose_state_dropdown);
-//		select.selectByVisibleText("NCR");
+		Current_address.sendKeys(testData.get("forms_practiseforms_Current Address"));
+
 		ddh.dropDownByVisibleText(Choose_state_dropdown,"NCR");
 		
-		
-//		select= new Select(Choose_city_dropdown);
-//		select.selectByValue("Lucknow");
+
 		ddh.dropDownByValue(Choose_city_dropdown, "Lucknow");
 		
-		CE.clickElement(forms, 10, 2);	
+		CE.clickElement(forms, 2, 2);	
 
-//		wait.until(ExpectedConditions.visibilityOf(forms));
-//		actions.moveToElement(forms).click().perform();
 	
 		
 		

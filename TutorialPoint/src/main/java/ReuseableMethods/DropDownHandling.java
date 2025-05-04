@@ -1,6 +1,9 @@
 package ReuseableMethods;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,16 +12,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class DropDownHandling {
+import TestBase.DriverFactory;
+import TestBase.testBase;
+
+public class DropDownHandling extends testBase {
 	
-	WebDriver driver;
+	
 	WebElement element;
-	WebDriverWait wait;
 	
-	public DropDownHandling(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
-		wait= new WebDriverWait(driver, Duration.ofSeconds(2));
+	public DropDownHandling() {
+		PageFactory.initElements(DriverFactory.getInstance().getDriver(), this);
+//		wait= new WebDriverWait(driver, Duration.ofSeconds(30));
 	}
 	
 	public void dropDownByVisibleText(WebElement dropdownelement , String Text) {
@@ -43,4 +47,19 @@ public class DropDownHandling {
 		Select select = new Select(dropdownelement);
 		return select.getFirstSelectedOption().getText();
 	}	
+	
+	
+	public List<String> getDropdownOptions(WebElement dropdownelement) {
+		Select select = new Select(dropdownelement);
+		
+		List<WebElement> list_of_webelement = select.getOptions();
+		List<String> actualContents  = new ArrayList<String>();
+		
+		for (WebElement webelement : list_of_webelement) {
+			actualContents.add(webelement.getText());
+		}
+		return actualContents;
+		
+	}
+	
 }
